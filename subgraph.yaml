@@ -1,17 +1,18 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: ERC20 Subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: ERC20
-    network: mainnet
+    network: linea
     source:
       abi: ERC20
-      startBlock: 0
+      address: '0x3478dE5e82431676C87113001bBeeb359cb5eAa5'
+      startBlock: 4811275
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Account

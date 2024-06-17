@@ -73,11 +73,11 @@ export function handleApproval(event: Approval): void {
   }
 
   let tokenApproval = TokenApproval.load(
-    token.id + "-" + ownerAccount.id + "-" + spenderAccount.id
+    ownerAccount.id + "-" + spenderAccount.id
   );
   if (!tokenApproval) {
     tokenApproval = new TokenApproval(
-      token.id + "-" + ownerAccount.id + "-" + spenderAccount.id
+      ownerAccount.id + "-" + spenderAccount.id
     );
     tokenApproval.token = token.id;
     tokenApproval.ownerAccount = ownerAccount.id;
@@ -105,9 +105,9 @@ export function handleTransfer(event: Transfer): void {
   }
 
   if (fromAccount.id != zeroAddress) {
-    let fromTokenBalance = TokenBalance.load(token.id + "-" + fromAccount.id);
+    let fromTokenBalance = TokenBalance.load(fromAccount.id);
     if (!fromTokenBalance) {
-      fromTokenBalance = new TokenBalance(token.id + "-" + fromAccount.id);
+      fromTokenBalance = new TokenBalance(fromAccount.id);
       fromTokenBalance.token = token.id;
       fromTokenBalance.account = fromAccount.id;
       fromTokenBalance.value = BigDecimal.fromString("0");
@@ -116,13 +116,15 @@ export function handleTransfer(event: Transfer): void {
     fromTokenBalance.save();
   }
 
-  let toTokenBalance = TokenBalance.load(token.id + "-" + toAccount.id);
-  if (!toTokenBalance) {
-    toTokenBalance = new TokenBalance(token.id + "-" + toAccount.id);
-    toTokenBalance.token = token.id;
-    toTokenBalance.account = toAccount.id;
-    toTokenBalance.value = BigDecimal.fromString("0");
+  if (toAccount.id != zeroAddress) {
+    let toTokenBalance = TokenBalance.load(toAccount.id);
+    if (!toTokenBalance) {
+      toTokenBalance = new TokenBalance(toAccount.id);
+      toTokenBalance.token = token.id;
+      toTokenBalance.account = toAccount.id;
+      toTokenBalance.value = BigDecimal.fromString("0");
+    }
+    toTokenBalance.value = toTokenBalance.value.plus(value);
+    toTokenBalance.save();
   }
-  toTokenBalance.value = toTokenBalance.value.plus(value);
-  toTokenBalance.save();
 }
