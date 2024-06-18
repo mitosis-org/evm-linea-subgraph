@@ -6,7 +6,7 @@
     "codegen": "graph codegen",
     "build": "graph build"
   },
-  "author": "Eddy",
+  "author": "George Roman, Eddy",
   "license": "MIT",
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.51.0",
