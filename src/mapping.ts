@@ -72,9 +72,10 @@ export function handleTransfer(event: Transfer): void {
   }
 
   if (fromAccount.id != zeroAddress) {
-    let fromTokenBalance = TokenBalance.load(fromAccount.id);
+    const fromTokenBalanceId = `${token.id}-${fromAccount.id}`;
+    let fromTokenBalance = TokenBalance.load(fromTokenBalanceId);
     if (!fromTokenBalance) {
-      fromTokenBalance = new TokenBalance(fromAccount.id);
+      fromTokenBalance = new TokenBalance(fromTokenBalanceId);
       fromTokenBalance.token = token.id;
       fromTokenBalance.account = fromAccount.id;
       fromTokenBalance.value = BigDecimal.fromString("0");
@@ -84,9 +85,10 @@ export function handleTransfer(event: Transfer): void {
   }
 
   if (toAccount.id != zeroAddress) {
-    let toTokenBalance = TokenBalance.load(toAccount.id);
+    const toTokenBalanceId = `${token.id}-${toAccount.id}`;
+    let toTokenBalance = TokenBalance.load(toTokenBalanceId);
     if (!toTokenBalance) {
-      toTokenBalance = new TokenBalance(toAccount.id);
+      toTokenBalance = new TokenBalance(toTokenBalanceId);
       toTokenBalance.token = token.id;
       toTokenBalance.account = toAccount.id;
       toTokenBalance.value = BigDecimal.fromString("0");
