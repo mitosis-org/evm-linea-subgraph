@@ -1,10 +1,9 @@
 import { BigDecimal, ethereum } from "@graphprotocol/graph-ts";
 
-import { Approval, ERC20, Transfer } from "../generated/ERC20/ERC20";
+import { ERC20, Transfer } from "../generated/ERC20/ERC20";
 import {
   Account,
   Token,
-  TokenApproval,
   TokenBalance,
 } from "../generated/schema";
 
@@ -53,38 +52,6 @@ function loadOrCreateToken(event: ethereum.Event): Token | null {
     token.save();
   }
   return token;
-}
-
-export function handleApproval(event: Approval): void {
-  let token = loadOrCreateToken(event);
-  if (!token) {
-    return;
-  }
-
-  let owner = event.params.owner.toHex();
-  let spender = event.params.spender.toHex();
-  let value = event.params.value.toBigDecimal();
-
-  let ownerAccount = loadOrCreateAccount(owner);
-  let spenderAccount = loadOrCreateAccount(spender);
-
-  if (!ownerAccount || !spenderAccount) {
-    return;
-  }
-
-  let tokenApproval = TokenApproval.load(
-    ownerAccount.id + "-" + spenderAccount.id
-  );
-  if (!tokenApproval) {
-    tokenApproval = new TokenApproval(
-      ownerAccount.id + "-" + spenderAccount.id
-    );
-    tokenApproval.token = token.id;
-    tokenApproval.ownerAccount = ownerAccount.id;
-    tokenApproval.spenderAccount = spenderAccount.id;
-  }
-  tokenApproval.value = value;
-  tokenApproval.save();
 }
 
 export function handleTransfer(event: Transfer): void {
