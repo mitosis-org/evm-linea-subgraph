@@ -1,4 +1,4 @@
-specVersion: 0.0.4
+specVersion: 0.0.5
 description: ERC20 Subgraph
 schema:
   file: ./schema.graphql
