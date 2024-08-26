@@ -8,7 +8,7 @@ dataSources:
     network: linea
     source:
       abi: ERC20
-      address: '0x3478dE5e82431676C87113001bBeeb359cb5eAa5'
+      address: "0x3478dE5e82431676C87113001bBeeb359cb5eAa5"
       startBlock: 4811275
     mapping:
       kind: ethereum/events
@@ -30,8 +30,30 @@ dataSources:
     network: linea
     source:
       abi: ERC20
-      address: '0x56ceD49205e5D9b4d8D9B29f4aBfbe7bb8b08768'
+      address: "0x56ceD49205e5D9b4d8D9B29f4aBfbe7bb8b08768"
       startBlock: 6645189
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Account
+        - Token
+        - TokenBalance
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: miezETH
+    network: linea
+    source:
+      abi: ERC20
+      address: "0x56ceD49205e5D9b4d8D9B29f4aBfbe7bb8b08768"
+      startBlock: 8631420
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
